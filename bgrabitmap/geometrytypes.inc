@@ -1027,7 +1027,7 @@ begin
   if lenU = 0 then exit(0);
   u.Scale(1/lenU);
   v := BottomLeft-TopLeft;
-  lenH := PointF(-u.y,u.x)*v;
+  lenH := PointF(-u.y,u.x)**v;
   result := abs(lenU*lenH);
 end;
 
@@ -1107,17 +1107,17 @@ begin
   perpV := PointF(v.y,-v.x);
 
   //reverse normal if not in the same direction as other side
-  if perpU*v < 0 then
+  if perpU**v < 0 then
   begin
     perpU := -perpU;
     perpV := -perpV;
   end;
 
   //determine position along normals
-  posU1 := (APoint-TopLeft)*perpU;
-  posU2 := (APoint-BottomLeft)*perpU;
-  posV1 := (APoint-TopLeft)*perpV;
-  posV2 := (APoint-TopRight)*perpV;
+  posU1 := (APoint-TopLeft)**perpU;
+  posU2 := (APoint-BottomLeft)**perpU;
+  posV1 := (APoint-TopLeft)**perpV;
+  posV2 := (APoint-TopRight)**perpV;
 
   result := (posU1 >= 0) and (posU2 < 0) and (posV1 >= 0) and (posV2 < 0);
 end;
@@ -1509,7 +1509,7 @@ begin
   if isEmptyPointF(v) then
     result := EmptySingle
   else
-    result := sqrt(v*v);
+    result := sqrt(v**v);
 end;
 
 function VectDet(v1, v2: TPointF): double;
@@ -1561,9 +1561,9 @@ var pos, step: single;
 begin
   parallel := false;
   n := PointF(-line2.dir.y, line2.dir.x);
-  step := line1.dir*n;
+  step := line1.dir**n;
   if step = 0 then begin SetParallel; exit; end;
-  pos := (line2.origin - line1.origin)*n;
+  pos := (line2.origin - line1.origin)**n;
   result := line1.origin + line1.dir * (pos/step);
 end;
 
@@ -1652,8 +1652,8 @@ begin
     else
     begin
       //check if intersections are inside the segments
-      pos1 := (inter-seg1.origin)*seg1.dir;
-      pos2 := (inter-seg2.origin)*seg2.dir;
+      pos1 := (inter-seg1.origin)**seg1.dir;
+      pos2 := (inter-seg2.origin)**seg2.dir;
       if (pos1 >= 0) and (pos1 <= seg1len) and
          (pos2 >= 0) and (pos2 <= seg2len) then
         result := true
